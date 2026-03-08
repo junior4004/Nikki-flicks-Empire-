@@ -1,0 +1,50 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKI FLICKS EMPIRE</title>
+    <style>
+        body { background: #000; color: #D4AF37; font-family: 'Arial', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .header { border-bottom: 2px solid #D4AF37; padding-bottom: 20px; margin-bottom: 30px; }
+        .empire-title { font-size: 30px; font-weight: bold; letter-spacing: 5px; }
+        .vip-tag { font-size: 12px; color: #777; margin-top: 5px; }
+        .btn { background: #D4AF37; color: #000; border: none; padding: 20px; width: 100%; max-width: 300px; font-size: 18px; font-weight: bold; border-radius: 10px; margin: 10px 0; cursor: pointer; text-transform: uppercase; }
+        #player { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
+        #casino { display: none; position: fixed; inset: 0; background: #063306; z-index: 50; flex-direction: column; justify-content: center; align-items: center; }
+        .card-display { font-size: 80px; background: #fff; color: #000; padding: 20px 40px; border-radius: 15px; margin: 20px; border: 4px solid #D4AF37; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="empire-title">NIKKI FLICKS</div>
+        <div class="vip-tag">IMPERIAL EMPIRE • BOLES ACRES VIP</div>
+    </div>
+
+    <button class="btn" onclick="openMovies()">📺 ENTER MOVIE THEATER</button>
+    <button class="btn" onclick="openCasino()">🎲 BOLES ACRES CASINO</button>
+
+    <div id="player">
+        <button onclick="location.reload()" style="background:red; color:#fff; padding:15px; width:100%; font-weight:bold;">CLOSE & GO BACK</button>
+        <iframe src="https://vidsrc.to/embed/movie/tt0111161" width="100%" height="90%" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div id="casino">
+        <h2 style="color:#D4AF37;">BOLES ACRES VIP TABLE</h2>
+        <div id="card" class="card-display">VIP</div>
+        <button class="btn" onclick="deal()">DEAL NEW CARD</button>
+        <button class="btn" style="background:#555; color:#fff;" onclick="location.reload()">EXIT CASINO</button>
+    </div>
+
+    <script>
+        function openMovies() { document.getElementById('player').style.display = 'block'; }
+        function openCasino() { document.getElementById('casino').style.display = 'flex'; }
+        function deal() {
+            const cards = ['A♠', 'K♥', 'Q♦', 'J♣', '10♠', 'A♥', 'K♠', '9♦'];
+            document.getElementById('card').innerText = cards[Math.floor(Math.random() * cards.length)];
+        }
+    </script>
+</body>
+</html>
