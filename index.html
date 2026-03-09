@@ -1,4 +1,4 @@
-
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,7 @@
         .grid-box { background: linear-gradient(#1a1a1a, #0a0a0a); border: 2px solid #333; border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; }
         .grid-box:active { border-color: #D4AF37; transform: scale(0.95); }
         .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; }
-        .menu-item { background: #111; border-bottom: 1px solid #222; padding: 18px; text-align: left; width: 100%; display: flex; justify-content: space-between; font-weight: bold; }
+        .menu-item { background: #111; border-bottom: 1px solid #222; padding: 18px; text-align: left; width: 100%; display: flex; justify-content: space-between; font-weight: bold; color: white; }
     </style>
 </head>
 <body class="p-4">
@@ -33,37 +33,46 @@
         <div class="grid-box" onclick="openOverlay('lobby-view')">
             <div class="text-3xl">🃏</div><div class="text-[10px] mt-2 font-bold uppercase">Card Room</div>
         </div>
-        <div class="grid-box" onclick="alert('Radio Loading...')">
+        <div class="grid-box" onclick="alert('Radio Stations loading next build...')">
             <div class="text-3xl">📻</div><div class="text-[10px] mt-2 font-bold uppercase">Local Radio</div>
         </div>
     </div>
 
-    <div id="tv-menu" class="overlay p-6 overflow-y-auto text-white">
-        <h2 class="gold-title text-2xl mb-6 text-[#D4AF37]">LIVE BROADCAST</h2>
+    <div id="tv-menu" class="overlay p-6 overflow-y-auto">
+        <h2 class="gold-title text-2xl mb-6">LIVE BROADCASTS</h2>
         <div class="max-w-sm mx-auto space-y-2">
-            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/live_stream?channel=UC8p1vwvWgr6t1qN79s9zWog')"><span>📡 ABC NEWS LIVE</span></button>
-            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/live_stream?channel=UC7N-K2XFp2Acspsf_67_f9A')"><span>📡 CBS NEWS 24/7</span></button>
-            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/live_stream?channel=UC16niPrMtuxwMFS7N3NfMaw')"><span>📡 FOX LIVE</span></button>
-            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw')"><span>🎞️ CLASSIC MOVIES</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/videoseries?list=PL6H8pG6uS5T0U_4W1n6mF_lC3u9K9PzW65')"><span>📡 ABC NEWS (LIVE)</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/videoseries?list=PL6H8pG6uS5T0U_4W1n6mF_lC3u9K9PzW66')"><span>📡 NBC NEWS (LIVE)</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/videoseries?list=PL6H8pG6uS5T0U_4W1n6mF_lC3u9K9PzW67')"><span>📡 CBS NEWS (24/7)</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/videoseries?list=PL6H8pG6uS5T0U_4W1n6mF_lC3u9K9PzW68')"><span>📡 THE CW (NEWS)</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/videoseries?list=PL6H8pG6uS5T0U_4W1n6mF_lC3u9K9PzW69')"><span>🎞️ CLASSIC MOVIE CHANNEL</span></button>
         </div>
         <button onclick="closeAll()" class="mt-10 text-gray-500 underline">BACK TO MAIN</button>
     </div>
 
     <div id="media-view" class="overlay">
         <div class="flex justify-between items-center p-4 bg-[#111]">
-            <span class="text-[10px] font-bold tracking-widest text-[#D4AF37]">IMPERIAL BROADCASTING</span>
+            <span class="text-[10px] font-bold text-[#D4AF37]">IMPERIAL STREAMING</span>
             <button onclick="closeAll()" class="text-red-600 font-bold px-4 py-1 border border-red-600 rounded text-xs">EXIT X</button>
         </div>
-        <iframe id="stream-frame" src="" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+        <iframe id="stream-frame" src="" class="w-full h-full" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
-    <div id="theater-menu" class="overlay p-6 text-white"><h2 class="gold-title text-2xl mb-6 text-[#D4AF37]">NOW PLAYING</h2><button onclick="closeAll()" class="mt-10 text-gray-500 underline">BACK</button></div>
-    <div id="lobby-view" class="overlay p-8" style="background: radial-gradient(#1a4d1a, #000);"><h2 class="gold-title text-2xl mb-8 font-black text-[#D4AF37]">TOURNAMENT LOBBY</h2><button onclick="closeAll()" class="mt-12 text-gray-400 underline">BACK</button></div>
+    <div id="theater-menu" class="overlay p-6"><h2 class="gold-title text-2xl mb-6">THEATER</h2><button onclick="closeAll()" class="mt-10 text-gray-500 underline">BACK</button></div>
+    <div id="lobby-view" class="overlay p-8" style="background: radial-gradient(#1a4d1a, #000);"><h2 class="gold-title text-2xl mb-8 font-black">CARD ROOM</h2><button onclick="closeAll()" class="mt-12 text-gray-400 underline">BACK</button></div>
 
     <script>
         function openOverlay(id) { document.getElementById(id).style.display = 'flex'; }
-        function playMedia(url) { document.getElementById('stream-frame').src = url; document.getElementById('media-view').style.display = 'flex'; }
-        function closeAll() { document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); document.getElementById('stream-frame').src = ''; }
+        function playMedia(url) { 
+            // This format works best for mobile YouTube embeds
+            let videoId = url.split('/').pop();
+            document.getElementById('stream-frame').src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1"; 
+            document.getElementById('media-view').style.display = 'flex'; 
+        }
+        function closeAll() { 
+            document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); 
+            document.getElementById('stream-frame').src = ''; 
+        }
     </script>
 </body>
 </html>
