@@ -1,0 +1,62 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKI FLICKS EMPIRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+        body { background: #000; color: #D4AF37; font-family: sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
+        .gold-title { font-family: 'Cinzel', serif; letter-spacing: 2px; }
+        .grid-box { background: linear-gradient(#1a1a1a, #0a0a0a); border: 1px solid #333; border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; }
+        .grid-box:active { border-color: #D4AF37; transform: scale(0.95); }
+        .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; }
+        .menu-item { background: #111; border-bottom: 1px solid #222; padding: 15px; text-align: left; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body class="p-4">
+    <header class="mb-8">
+        <h1 class="gold-title text-3xl font-bold uppercase">Nikki Flicks</h1>
+        <p class="text-[10px] tracking-[0.4em] text-gray-500 mt-1">WOODLAND • IMPERIAL EMPIRE</p>
+    </header>
+    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+        <div class="grid-box" onclick="openOverlay('theater-menu')">
+            <div class="text-3xl">🎬</div><div class="text-[10px] mt-2 font-black text-red-600 uppercase">Multi-Screen Theater</div>
+        </div>
+        <div class="grid-box" onclick="openOverlay('lobby-view')">
+            <div class="text-3xl">🃏</div><div class="text-[10px] mt-2 font-bold uppercase">Tournament Card Room</div>
+        </div>
+        <div class="grid-box opacity-50"><div class="text-3xl">📺</div><div class="text-[10px] mt-2 font-bold uppercase italic">Live TV (Coming Next)</div></div>
+        <div class="grid-box opacity-50"><div class="text-3xl">📻</div><div class="text-[10px] mt-2 font-bold uppercase italic">Local Radio</div></div>
+    </div>
+    <div id="theater-menu" class="overlay p-6 overflow-y-auto">
+        <h2 class="gold-title text-2xl mb-6">NOW PLAYING</h2>
+        <div class="max-w-sm mx-auto space-y-2">
+            <button class="menu-item" onclick="playMedia('https://vidsrc.me/embed/movie/tt11315808')"><span>🎬 BLOCKBUSTER HITS</span> <span class="text-green-500 text-[10px]">AD-FREE</span></button>
+            <button class="menu-item" onclick="playMedia('https://www.youtube.com/embed/live_stream?channel=UC7_uRL0_DShS5T06W_H9_qw')"><span>🏛️ CLASSIC MOVIE CHANNEL</span> <span class="text-gray-500 text-[10px]">24/7</span></button>
+        </div>
+        <button onclick="closeAll()" class="mt-10 text-gray-500 underline">EXIT THEATER</button>
+    </div>
+    <div id="lobby-view" class="overlay p-8" style="background: radial-gradient(#1a4d1a, #000);">
+        <h2 class="gold-title text-2xl mb-8 font-black">TOURNAMENT LOBBY</h2>
+        <div class="max-w-sm mx-auto space-y-4">
+            <button onclick="alert('Holdem Bot Room Loading...')" class="w-full p-4 bg-black/50 border border-gold-600 rounded text-sm font-bold">TEXAS HOLD'EM (BOTS)</button>
+        </div>
+        <button onclick="closeAll()" class="mt-12 text-gray-400 underline">EXIT LOBBY</button>
+    </div>
+    <div id="media-view" class="overlay">
+        <div class="flex justify-between items-center p-4 bg-[#111]">
+            <span class="text-[10px] font-bold tracking-widest">IMPERIAL STREAMING</span>
+            <button onclick="closeAll()" class="text-red-600 font-bold px-4 py-1 border border-red-600 rounded text-xs">CLOSE X</button>
+        </div>
+        <iframe id="stream-frame" src="" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <script>
+        function openOverlay(id) { document.getElementById(id).style.display = 'flex'; }
+        function playMedia(url) { document.getElementById('stream-frame').src = url; document.getElementById('media-view').style.display = 'flex'; }
+        function closeAll() { document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); document.getElementById('stream-frame').src = ''; }
+    </script>
+</body>
+</html>
