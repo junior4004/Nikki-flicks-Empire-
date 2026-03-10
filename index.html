@@ -101,80 +101,100 @@
     </div>
 
     <script>
-        // --- CONFIG ---
-        const TMDB_TOKEN = 'PASTE_YOUR_TMDB_TOKEN_HERE'; 
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        
+    // --- CONFIG ---
+    // 1. Swap these placeholders with the keys you found in the Firebase Console
+    const firebaseConfig = {
+        apiKey: "AIzaSyCxfSyvGxTFkLyB6-THwxl2SKRz91w4nKc",
+        authDomain: "nikki-flicks-empire-7fe9f.firebaseapp.com",
+        databaseURL: "https://nikki-flicks-empire-7fe9f-default-rtdb.firebaseio.com",
+        projectId: "nikki-flicks-empire-7fe9f",
+        storageBucket: "nikki-flicks-empire-7fe9f.appspot.com",
+        messagingSenderId: "56554589255",
+        appId: "1:56554589255:web:8c5b04581775e54d86927d"
+    };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const player = videojs('main-player', { fluid: true });
-        let currentBalance = 10000;
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const player = videojs('main-player', { fluid: true });
+    let currentBalance = 10000;
 
-        // --- EMPIRE LOGIC ---
-        function enterEmpire() {
-            document.getElementById('gate').style.opacity = '0';
-            setTimeout(() => { document.getElementById('gate').style.display = 'none'; }, 1000);
-            loadTrending();
+    // --- EMPIRE LOGIC ---
+    function enterEmpire() {
+        document.getElementById('gate').style.opacity = '0';
+        setTimeout(() => { document.getElementById('gate').style.display = 'none'; }, 1000);
+        loadTrending();
+        listenForMessages(); // Start the live chat listener
+    }
+
+    async function loadTrending() {
+        // Fetching trending movies from TMDB
+        const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=43e8f6e540b344399888c74e152933f7`);
+        const d = await r.json();
+        renderMovies(d.results);
+    }
+
+    function renderMovies(list) {
+        const row = document.getElementById('movie-row');
+        row.innerHTML = list.map(m => `
+            <div class="poster" onclick="playMovie('https://vjs.zencdn.net/v/oceans.mp4', '${m.title.replace(/'/g, "")}')">
+                <img src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://via.placeholder.com/500x750'">
+                <div class="absolute bottom-0 p-4 bg-gradient-to-t from-black w-full text-[9px] font-black uppercase tracking-tighter">${m.title}</div>
+            </div>
+        `).join('');
+    }
+
+    function playMovie(url, title) {
+        document.getElementById('player-container').classList.remove('hidden');
+        player.src({ type: 'video/mp4', src: url });
+        player.play();
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+        console.log("Playing: " + title);
+    }
+
+    // --- CHAT LOGIC (THE CLOUD PART) ---
+    function sendMsg() {
+        const input = document.getElementById('msg-in');
+        const message = input.value.trim();
+        if (message === "") return;
+
+        // Push message to Firebase
+        db.ref('messages').push({
+            text: message,
+            timestamp: Date.now(),
+            user: "Empire Citizen"
+        });
+        input.value = "";
+    }
+
+    function listenForMessages() {
+        const msgDiv = document.getElementById('messages');
+        // Listen for new entries in Firebase
+        db.ref('messages').limitToLast(15).on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            const msgElement = `<div><span class="gold font-bold">CITIZEN:</span> ${data.text}</div>`;
+            msgDiv.innerHTML += msgElement;
+            msgDiv.scrollTop = msgDiv.scrollHeight; // Auto-scroll to latest
+        });
+    }
+
+    function sitAtTable(game) {
+        const id = game === 'SPADES' ? 's-mic' : 'p-mic';
+        document.getElementById(id).classList.toggle('hidden');
+        document.getElementById(id).classList.toggle('mic-active');
+        alert(`Joined ${game} table. Your mic is LIVE.`);
+    }
+
+    function upgradeToVIP() {
+        if(currentBalance >= 5000) {
+            currentBalance -= 5000;
+            document.getElementById('balance').innerText = currentBalance;
+            document.getElementById('status').innerText = "VIP ELITE";
+            document.getElementById('up-btn').style.display = 'none';
+            alert("Elite status granted.");
         }
-
-        async function loadTrending() {
-            const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=43e8f6e540b344399888c74e152933f7`); // Using a temp fallback key
-            const d = await r.json();
-            renderMovies(d.results);
-        }
-
-        function renderMovies(list) {
-            const row = document.getElementById('movie-row');
-            row.innerHTML = list.map(m => `
-                <div class="poster" onclick="playMovie('https://vjs.zencdn.net/v/oceans.mp4', '${m.title.replace(/'/g, "")}')">
-                    <img src="https://image.tmdb.org/t/p/w500${m.poster_path}" onerror="this.src='https://via.placeholder.com/500x750'">
-                    <div class="absolute bottom-0 p-4 bg-gradient-to-t from-black w-full text-[9px] font-black uppercase tracking-tighter">${m.title}</div>
-                </div>
-            `).join('');
-        }
-
-        function playMovie(url, title) {
-            document.getElementById('player-container').classList.remove('hidden');
-            player.src({ type: 'video/mp4', src: url });
-            player.play();
-            window.scrollTo({ top: 150, behavior: 'smooth' });
-        }
-
-        function upgradeToVIP() {
-            if(currentBalance >= 5000) {
-                currentBalance -= 5000;
-                document.getElementById('balance').innerText = currentBalance;
-                document.getElementById('status').innerText = "VIP ELITE";
-                document.getElementById('up-btn').style.display = 'none';
-                alert("Welcome to the Elite, Nicole.");
-            } else {
-                alert("Insufficient funds in your vault.");
-            }
-        }
-
-        function sitAtTable(game) {
-            const id = game === 'SPADES' ? 's-mic' : 'p-mic';
-            document.getElementById(id).classList.toggle('hidden');
-            document.getElementById(id).classList.toggle('mic-active');
-            alert(`Sitting at the ${game} table. Mic active.`);
-        }
-
-        function sendMsg() {
-            const input = document.getElementById('msg-in');
-            if(input.value.trim() === "") return;
-            const msgRow = `<div><span class="gold font-bold uppercase">Guest:</span> ${input.value}</div>`;
-            document.getElementById('messages').innerHTML += msgRow;
-            input.value = "";
-        }
+    }
     </script>
 </body>
 </html>
