@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKI FLICKS EMPIRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap');
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
+        .gold-text { color: #D4AF37; font-family: 'Cinzel', serif; }
+        .gold-border { border: 1px solid #D4AF37; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 15px; }
+        .scroll-row { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
+        .poster { min-width: 160px; height: 240px; border-radius: 10px; flex-shrink: 0; background: #111; overflow: hidden; border: 1px solid #222; }
+        .poster img { width: 100%; height: 100%; object-fit: cover; }
+        .mic-pulse { width: 8px; height: 8px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-black">
+
+    <div id="gate" class="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center p-8 text-center">
+        <h1 class="gold-text text-5xl mb-6 tracking-tighter">NIKKI FLICKS</h1>
+        <div class="glass-card p-8 max-w-md gold-border">
+            <h2 class="gold-text text-xl mb-4 uppercase">Nicole T. Welcome</h2>
+            <p class="text-xs text-gray-400 mb-8 leading-loose tracking-widest uppercase">
+                "Speak at your will, but watch your tongue. This is our house. Disrespect is not tolerated."
+            </p>
+            <button onclick="document.getElementById('gate').style.display='none'" class="w-full bg-[#D4AF37] text-black font-bold py-4 rounded-lg hover:bg-yellow-600 transition">ENTER EMPIRE</button>
+        </div>
+    </div>
+
+    <header class="p-5 border-b border-white/10 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-md z-50">
+        <span class="gold-text text-2xl tracking-tighter">NIKKI FLICKS</span>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleRadio()" id="r-btn" class="text-[10px] gold-border px-3 py-1 rounded-full text-[#D4AF37] font-bold">EMPIRE RADIO: OFF</button>
+            <div class="text-[#D4AF37] font-bold text-sm">💰 10,000</div>
+        </div>
+    </header>
+
+    <audio id="empireAudio" src="https://stream.zeno.fm/f978253v98zuv"></audio>
+
+    <div class="py-6">
+        <h3 class="px-6 gold-text text-xs tracking-[0.3em] uppercase mb-4 text-gray-500">Theater</h3>
+        <div class="scroll-row">
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/8Gxv2mYmUpeTjU3S3nZpS6YpEPv.jpg"></div>
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/6oom5QYvA6rEEUbsvMv3Rv70A19.jpg"></div>
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/v997093p799p8v.jpg"></div>
+        </div>
+    </div>
+
+    <div class="py-6">
+        <h3 class="px-6 gold-text text-xs tracking-[0.3em] uppercase mb-4 text-gray-500">The Card Room</h3>
+        <div class="scroll-row">
+            <div class="glass-card p-6 min-w-[150px] text-center" onclick="sit('Spades')">
+                <div class="flex justify-center mb-4"><div class="mic-pulse"></div></div>
+                <div class="text-3xl mb-2">♠️</div>
+                <div class="text-[10px] font-bold">SPADES</div>
+            </div>
+            <div class="glass-card p-6 min-w-[150px] text-center" onclick="sit('Poker')">
+                <div class="flex justify-center mb-4"><div class="mic-pulse"></div></div>
+                <div class="text-3xl mb-2">♥️</div>
+                <div class="text-[10px] font-bold">POKER</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 bg-red-950/10 border-t border-red-900/30">
+        <h3 class="px-6 text-red-600 text-xs tracking-[0.3em] uppercase mb-4 font-bold">After Hours (18+)</h3>
+        <div class="scroll-row">
+            <div class="poster border-red-900/50"><img src="https://image.tmdb.org/t/p/w500/o73wSBY96su92v5pY0v6as8p0V2.jpg"></div>
+            <div class="poster border-red-900/50"><img src="https://image.tmdb.org/t/p/w500/scv7m7n42yS4fC7e8Pclxid9r7S.jpg"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleRadio() {
+            const a = document.getElementById('empireAudio');
+            const b = document.getElementById('r-btn');
+            if(a.paused) { a.play(); b.innerText = "EMPIRE RADIO: LIVE"; b.classList.add('bg-[#D4AF37]', 'text-black'); }
+            else { a.pause(); b.innerText = "EMPIRE RADIO: OFF"; b.classList.remove('bg-[#D4AF37]', 'text-black'); }
+        }
+        function sit(table) {
+            alert("Sitting at the " + table + " Table. Microphone active. Welcome to the Empire.");
+        }
+    </script>
+</body>
+</html>
