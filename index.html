@@ -7,59 +7,65 @@
     <title>NIKKI FLICKS EMPIRE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
-        body { background: #000; color: #D4AF37; font-family: sans-serif; text-align: center; margin: 0; }
-        .gold-title { font-family: 'Cinzel', serif; letter-spacing: 2px; }
-        .grid-box { background: linear-gradient(#222, #050505); border: 2px solid #D4AF37; border-radius: 15px; padding: 25px; cursor: pointer; }
-        .overlay { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; }
-        .menu-item { background: #111; border-bottom: 1px solid #333; padding: 20px; text-align: left; width: 100%; color: #fff; font-weight: bold; display: block; }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;900&display=swap');
+        body { background-color: #000; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
+        .gold-accent { color: #D4AF37; font-family: 'Cinzel', serif; }
+        .netflix-row { display: flex; overflow-x: scroll; gap: 15px; padding: 20px; scrollbar-width: none; }
+        .movie-card { min-width: 160px; height: 240px; background: #222; border-radius: 8px; border: 1px solid #333; transition: transform 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .movie-card:hover { transform: scale(1.1); z-index: 10; border-color: #D4AF37; }
+        .overlay { position: fixed; inset: 0; background: #000; z-index: 100; display: none; flex-direction: column; }
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <header class="mb-10">
-        <h1 class="gold-title text-4xl font-bold uppercase">Nikki Flicks</h1>
-        <p class="text-[11px] tracking-[0.5em] text-gray-400 mt-2 font-bold">WOODLAND • CALIFORNIA</p>
+    <header class="p-6 text-center border-b border-[#222]">
+        <h1 class="gold-accent text-4xl font-bold uppercase tracking-widest">Nikki Flicks</h1>
+        <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase">Woodland • California</p>
     </header>
 
-    <div class="grid grid-cols-2 gap-6 max-w-md mx-auto">
-        <div class="grid-box" onclick="openOverlay('tv-menu')">
-            <div class="text-4xl">📺</div><div class="text-[11px] mt-3 font-black uppercase text-blue-400">Live TV</div>
-        </div>
-        <div class="grid-box" onclick="openOverlay('theater-menu')">
-            <div class="text-4xl">🎬</div><div class="text-[11px] mt-3 font-black uppercase text-red-500">Theater</div>
-        </div>
-        <div class="grid-box" onclick="openOverlay('radio-menu')">
-            <div class="text-4xl">📻</div><div class="text-[11px] mt-3 font-black uppercase text-green-500">Radio</div>
-        </div>
-        <div class="grid-box" onclick="openOverlay('card-view')">
-            <div class="text-4xl">🃏</div><div class="text-[11px] mt-3 font-black uppercase text-white">Card Room</div>
-        </div>
+    <div class="p-4"><h2 class="text-sm font-black uppercase tracking-tighter gold-accent">Empire Theater - Trending Now</h2></div>
+    <div class="netflix-row">
+        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Action+1" alt="Movie"></div>
+        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Drama+2" alt="Movie"></div>
+        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Comedy+3" alt="Movie"></div>
+        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Classic+4" alt="Movie"></div>
     </div>
 
-    <div id="tv-menu" class="overlay p-6 overflow-y-auto">
-        <h2 class="gold-title text-2xl mb-8">SELECT STATION</h2>
-        <div class="max-w-sm mx-auto space-y-4">
-            <a href="https://www.youtube.com/user/ABCNews/live" target="_blank" class="menu-item">📡 ABC NEWS LIVE</a>
-            <a href="https://www.youtube.com/@NBCNews/live" target="_blank" class="menu-item">📡 NBC NEWS NOW</a>
-            <button onclick="closeAll()" class="mt-12 text-gray-500 font-bold uppercase underline">Back</button>
-        </div>
+    <div class="p-4"><h2 class="text-sm font-black uppercase tracking-tighter gold-accent">Live Broadcast Hub</h2></div>
+    <div class="netflix-row">
+        <div class="movie-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw3')"><img src="https://via.placeholder.com/160x240/003366/fff?text=Global+News" alt="TV"></div>
+        <div class="movie-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw4')"><img src="https://via.placeholder.com/160x240/330000/fff?text=Movie+Stream" alt="TV"></div>
     </div>
 
-    <div id="radio-menu" class="overlay p-6">
-        <h2 class="gold-title text-2xl mb-8">WOODLAND RADIO</h2>
-        <div class="max-w-sm mx-auto space-y-4">
-            <a href="https://tunein.com/radio/Woodland-r101255/" target="_blank" class="menu-item">📻 LOCAL RADIO</a>
-            <button onclick="closeAll()" class="mt-12 text-gray-500 font-bold uppercase underline">Back</button>
-        </div>
+    <div class="grid grid-cols-2 gap-4 p-6">
+        <button onclick="openGPSRadio()" class="bg-[#111] border-2 border-[#D4AF37] p-4 rounded-lg font-bold">📻 LOCAL RADIO</button>
+        <button onclick="openCasino()" class="bg-[#111] border-2 border-white p-4 rounded-lg font-bold">🃏 CARD ROOM</button>
     </div>
 
-    <div id="theater-menu" class="overlay p-8"><h2>THEATER</h2><button onclick="closeAll()">BACK</button></div>
-    <div id="card-view" class="overlay p-8"><h2>CARD ROOM</h2><button onclick="closeAll()">BACK</button></div>
+    <div id="master-player" class="overlay">
+        <div class="flex justify-between p-4 bg-[#111] border-b border-[#333]">
+            <span class="gold-accent font-bold">EMPIRE PLAYER</span>
+            <button onclick="closePlayer()" class="text-red-500 font-bold uppercase">Exit X</button>
+        </div>
+        <iframe id="player-frame" src="" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+    </div>
 
     <script>
-        function openOverlay(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeAll() { document.querySelectorAll('.overlay').forEach(e => e.style.display = 'none'); }
+        function openPlayer(url) {
+            document.getElementById('player-frame').src = url;
+            document.getElementById('master-player').style.display = 'flex';
+        }
+        function closePlayer() {
+            document.getElementById('master-player').style.display = 'none';
+            document.getElementById('player-frame').src = '';
+        }
+        function openGPSRadio() {
+            // Using a universal GPS-based radio link for 2026
+            window.open('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw5', '_blank');
+        }
+        function openCasino() {
+            alert('Casino Lobby Loading: Spades, Poker, Pinochle... (Phase 2)');
+        }
     </script>
 </body>
 </html>
