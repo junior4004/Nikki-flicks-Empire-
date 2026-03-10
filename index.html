@@ -1,71 +1,95 @@
-
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NIKKI FLICKS EMPIRE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;900&display=swap');
-        body { background-color: #000; color: #fff; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
-        .gold-accent { color: #D4AF37; font-family: 'Cinzel', serif; }
-        .netflix-row { display: flex; overflow-x: scroll; gap: 15px; padding: 20px; scrollbar-width: none; }
-        .movie-card { min-width: 160px; height: 240px; background: #222; border-radius: 8px; border: 1px solid #333; transition: transform 0.3s; cursor: pointer; position: relative; overflow: hidden; }
-        .movie-card:hover { transform: scale(1.1); z-index: 10; border-color: #D4AF37; }
-        .overlay { position: fixed; inset: 0; background: #000; z-index: 100; display: none; flex-direction: column; }
-    </style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>NIKKI FLICKS | The Shot Caller Experience</title>
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+   <style>
+       :root {
+           --deep-purple: #1a0a2e;
+           --royal-purple: #2d1b4e;
+           --electric-purple: #4a148c;
+           --onyx-black: #0d0d0d;
+           --rich-black: #050505;
+           --shimmer-gold: #d4af37;
+           --bright-gold: #ffd700;
+           --pale-gold: #f4e4c1;
+           --danger-red: #dc143c;
+           --neon-red: #ff073a;
+       }
+
+       * { margin: 0; padding: 0; box-sizing: border-box; }
+
+       body { font-family: 'Inter', sans-serif; background: var(--rich-black); color: #fff; overflow-x: hidden; }
+
+       /* AGE GATE */
+       #age-gate { position: fixed; inset: 0; background: linear-gradient(135deg, var(--deep-purple), var(--onyx-black)); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; }
+       .age-gate-content { max-width: 600px; border: 3px solid var(--shimmer-gold); padding: 3rem; background: rgba(0,0,0,0.8); box-shadow: 0 0 50px rgba(212,175,55,0.3); }
+       .age-gate-logo { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; background: linear-gradient(45deg, var(--shimmer-gold), var(--bright-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+       .age-warning { font-size: 4rem; color: var(--danger-red); text-shadow: 0 0 20px var(--neon-red); animation: pulse 2s infinite; }
+       @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+       .age-btn { background: var(--shimmer-gold); color: #000; padding: 1rem 3rem; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; cursor: pointer; border: none; margin-top: 2rem; }
+
+       /* MAIN LOBBY */
+       #main-lobby { display: none; min-height: 100vh; }
+       .lobby-header { background: #111; padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--shimmer-gold); sticky: top; }
+       
+       /* NETFLIX SECTION */
+       .section-title { padding: 20px; font-family: 'Playfair Display', serif; color: var(--shimmer-gold); font-size: 1.5rem; text-transform: uppercase; }
+       .netflix-row { display: flex; overflow-x: auto; gap: 15px; padding: 0 20px 20px; scrollbar-width: none; }
+       .poster { min-width: 140px; height: 200px; background: #222; border: 1px solid #333; border-radius: 5px; flex-shrink: 0; transition: 0.3s; }
+       .poster:active { transform: scale(1.1); border-color: var(--shimmer-gold); box-shadow: 0 0 15px var(--shimmer-gold); }
+
+       /* CARD ROOM GRID */
+       .casino-grid { display: grid; grid-cols: 2; gap: 10px; padding: 20px; }
+       .casino-card { background: linear-gradient(var(--royal-purple), #000); border: 2px solid var(--shimmer-gold); padding: 20px; border-radius: 10px; text-align: center; }
+       .chip-amount { color: var(--bright-gold); font-weight: 900; font-size: 1.2rem; }
+   </style>
 </head>
 <body>
 
-    <header class="p-6 text-center border-b border-[#222]">
-        <h1 class="gold-accent text-4xl font-bold uppercase tracking-widest">Nikki Flicks</h1>
-        <p class="text-[10px] tracking-[0.4em] text-gray-500 uppercase">Woodland • California</p>
-    </header>
+   <div id="age-gate">
+       <div class="age-gate-content">
+           <div class="age-gate-logo">NIKKI FLICKS</div>
+           <div class="age-warning">18+</div>
+           <p class="age-text">YOU ARE ENTERING THE SHOT CALLER EXPERIENCE.<br>VERIFY YOUR AGE TO PROCEED.</p>
+           <button class="age-btn" onclick="enterEmpire()">ENTER EMPIRE</button>
+       </div>
+   </div>
 
-    <div class="p-4"><h2 class="text-sm font-black uppercase tracking-tighter gold-accent">Empire Theater - Trending Now</h2></div>
-    <div class="netflix-row">
-        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Action+1" alt="Movie"></div>
-        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Drama+2" alt="Movie"></div>
-        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Comedy+3" alt="Movie"></div>
-        <div class="movie-card" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/160x240/1a1a1a/D4AF37?text=Classic+4" alt="Movie"></div>
-    </div>
+   <div id="main-lobby">
+       <header class="lobby-header">
+           <div class="age-gate-logo" style="font-size: 1.5rem;">NIKKI FLICKS</div>
+           <div style="background: rgba(212,175,55,0.1); border: 1px solid var(--shimmer-gold); padding: 5px 15px; border-radius: 20px;">
+               <span class="chip-amount">💰 10,000</span>
+           </div>
+       </header>
 
-    <div class="p-4"><h2 class="text-sm font-black uppercase tracking-tighter gold-accent">Live Broadcast Hub</h2></div>
-    <div class="netflix-row">
-        <div class="movie-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw3')"><img src="https://via.placeholder.com/160x240/003366/fff?text=Global+News" alt="TV"></div>
-        <div class="movie-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw4')"><img src="https://via.placeholder.com/160x240/330000/fff?text=Movie+Stream" alt="TV"></div>
-    </div>
+       <h2 class="section-title">Empire Theater</h2>
+       <div class="netflix-row">
+           <div class="poster" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/140x200/111/d4af37?text=MOVIE+1" style="width:100%; height:100%;"></div>
+           <div class="poster" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/140x200/111/d4af37?text=MOVIE+2" style="width:100%; height:100%;"></div>
+           <div class="poster" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/140x200/111/d4af37?text=MOVIE+3" style="width:100%; height:100%;"></div>
+           <div class="poster" onclick="alert('Movie Loading...')"><img src="https://via.placeholder.com/140x200/111/d4af37?text=MOVIE+4" style="width:100%; height:100%;"></div>
+       </div>
 
-    <div class="grid grid-cols-2 gap-4 p-6">
-        <button onclick="openGPSRadio()" class="bg-[#111] border-2 border-[#D4AF37] p-4 rounded-lg font-bold">📻 LOCAL RADIO</button>
-        <button onclick="openCasino()" class="bg-[#111] border-2 border-white p-4 rounded-lg font-bold">🃏 CARD ROOM</button>
-    </div>
+       <h2 class="section-title">The Card Room</h2>
+       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;">
+           <div class="casino-card">🃏<br>SPADES</div>
+           <div class="casino-card">🃏<br>POKER</div>
+           <div class="casino-card">🃏<br>TEXAS HOLD'EM</div>
+           <div class="casino-card">🃏<br>PINOCHLE</div>
+       </div>
 
-    <div id="master-player" class="overlay">
-        <div class="flex justify-between p-4 bg-[#111] border-b border-[#333]">
-            <span class="gold-accent font-bold">EMPIRE PLAYER</span>
-            <button onclick="closePlayer()" class="text-red-500 font-bold uppercase">Exit X</button>
-        </div>
-        <iframe id="player-frame" src="" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
-    </div>
+       <button class="age-btn" style="width: 90%; margin: 5%; background: var(--danger-red); color: #fff;">Watch Ad for +500 Chips</button>
+   </div>
 
-    <script>
-        function openPlayer(url) {
-            document.getElementById('player-frame').src = url;
-            document.getElementById('master-player').style.display = 'flex';
-        }
-        function closePlayer() {
-            document.getElementById('master-player').style.display = 'none';
-            document.getElementById('player-frame').src = '';
-        }
-        function openGPSRadio() {
-            // Using a universal GPS-based radio link for 2026
-            window.open('https://www.youtube.com/embed/live_stream?channel=UCIRYBOHlp22x27L6L87WAnw5', '_blank');
-        }
-        function openCasino() {
-            alert('Casino Lobby Loading: Spades, Poker, Pinochle... (Phase 2)');
-        }
-    </script>
+   <script>
+       function enterEmpire() {
+           document.getElementById('age-gate').style.display = 'none';
+           document.getElementById('main-lobby').style.display = 'block';
+       }
+   </script>
 </body>
 </html>
