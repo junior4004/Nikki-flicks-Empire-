@@ -1,51 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIKKI FLICKS EMPIRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #000; color: #D4AF37; font-family: sans-serif; text-align: center; margin: 0; }
-        #gate { position: fixed; inset: 0; background: #000; z-index: 9999; padding: 40px 20px; border: 5px solid #D4AF37; }
-        #main-lobby { display: none; padding: 20px; }
-        .rules-box { border: 1px solid #444; padding: 20px; margin: 20px 0; background: #0a0a0a; text-align: left; }
-        .btn { background: #D4AF37; color: #000; padding: 20px; width: 100%; font-weight: bold; border: none; font-size: 1.2rem; cursor: pointer; }
-        .poster-row { display: flex; overflow-x: auto; gap: 10px; padding: 20px 0; }
-        .poster { min-width: 140px; height: 200px; background: #222; border: 1px solid #D4AF37; border-radius: 8px; flex-shrink: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; overflow-x: hidden; }
+        .gold { color: #D4AF37; font-family: 'Cinzel', serif; }
+        .border-gold { border: 1px solid #D4AF37; }
+        .scroll-row { display: flex; overflow-x: auto; gap: 15px; padding: 10px 20px; scrollbar-width: none; }
+        .poster { min-width: 160px; height: 240px; background: #111; border-radius: 8px; flex-shrink: 0; border: 1px solid #333; overflow: hidden; }
+        .poster img { width: 100%; height: 100%; object-fit: cover; }
+        .casino-card { background: linear-gradient(145deg, #1a1a1a, #000); border: 2px solid #D4AF37; padding: 20px; border-radius: 15px; text-align: center; position: relative; min-width: 140px; }
+        .mic-icon { position: absolute; top: 10px; right: 10px; color: #ff3b3b; font-size: 12px; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .adult-row { border-top: 2px solid #4a0000; background: rgba(20, 0, 0, 0.5); padding: 20px 0; }
     </style>
 </head>
 <body>
 
-    <div id="gate">
-        <h1 style="font-size: 2.5rem;">NIKKI FLICKS</h1>
-        <div class="rules-box">
-            <h2 style="font-size: 1rem; color: #fff;">WELCOME FROM NICOLE T.</h2>
-            <p style="color: #888; font-style: italic; font-size: 0.8rem;">"Welcome to the Empire. Respect the house."</p>
-            <hr style="border-color: #333;">
-            <p style="font-weight: bold; color: #f00; font-size: 0.7rem; letter-spacing: 1px;">THE ROADHOUSE RULES:</p>
-            <p style="font-size: 0.75rem; color: #ccc;">SPEAK AT YOUR WILL, BUT WATCH YOUR TONGUE. DISRESPECT IS NOT TOLERATED. 18+ ONLY.</p>
-        </div>
-        <button class="btn" onclick="openEmpire()">ENTER EMPIRE</button>
-    </div>
-
-    <div id="main-lobby">
-        <h2 style="text-align: left;">EMPIRE THEATER</h2>
-        <div class="poster-row">
-            <div class="poster"></div><div class="poster"></div><div class="poster"></div>
-        </div>
-        <h2 style="text-align: left;">CARD ROOM</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div style="border: 1px solid #D4AF37; padding: 30px;">SPADES</div>
-            <div style="border: 1px solid #D4AF37; padding: 30px;">POKER</div>
+    <div id="gate" class="fixed inset-0 bg-black z-[9999] flex flex-col items-center justify-center p-6 text-center">
+        <h1 class="gold text-4xl mb-2">NIKKI FLICKS</h1>
+        <div class="border-gold p-6 bg-[#0a0a0a] max-w-md shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+            <h2 class="gold text-lg mb-2 uppercase font-bold">Welcome from Nicole T.</h2>
+            <div class="bg-red-950/20 p-4 border border-red-900 mb-6 text-left">
+                <p class="text-[10px] leading-relaxed text-gray-300 font-bold uppercase">
+                    SPEAK AT YOUR WILL, BUT WATCH YOUR TONGUE.<br><br>
+                    THIS IS OUR HOUSE. DISRESPECT IS NOT TOLERATED.<br><br>
+                    18+ ONLY. NO EXCEPTIONS.
+                </p>
+            </div>
+            <button onclick="document.getElementById('gate').style.display='none'" class="w-full bg-[#D4AF37] text-black font-black py-4 rounded uppercase tracking-widest shadow-lg">Enter Empire</button>
         </div>
     </div>
 
-    <script>
-        function openEmpire() {
-            console.log("Button clicked!"); // This helps us test
-            document.getElementById('gate').style.display = 'none';
-            document.getElementById('main-lobby').style.display = 'block';
-        }
-    </script>
+    <header class="p-4 border-b border-[#D4AF37] flex justify-between items-center bg-black sticky top-0 z-50">
+        <span class="gold text-xl tracking-tighter">NIKKI FLICKS</span>
+        <div class="flex items-center gap-4">
+            <span class="text-[#D4AF37] font-bold text-sm">💰 10,000</span>
+            <div class="w-8 h-8 rounded-full bg-[#D4AF37] border-2 border-white"></div>
+        </div>
+    </header>
+
+    <div class="py-6">
+        <h2 class="px-5 gold text-sm uppercase tracking-[0.2em] mb-4">Imperial Theater</h2>
+        <div class="scroll-row">
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/8Gxv2mYmUpeTjU3S3nZpS6YpEPv.jpg"></div>
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/6oom5QYvA6rEEUbsvMv3Rv70A19.jpg"></div>
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/v997093p799p8v.jpg"></div>
+            <div class="poster"><img src="https://image.tmdb.org/t/p/w500/r7XifpDYQUmS6OEM9w96p696uCc.jpg"></div>
+        </div>
+    </div>
+
+    <div class="py-6 bg-[#050505]">
+        <h2 class="px-5 gold text-sm uppercase tracking-[0.2em] mb-4">The Card Room</h2>
+        <div class="scroll-row">
+            <div class="casino-card">
+                <span class="mic-icon">🎤 LIVE</span>
+                <div class="text-3xl mb-2">♠️</div>
+                <div class="font-bold text-xs">SPADES TABLE</div>
+                <button class="mt-3 text-[10px] border border-[#D4AF37] px-3 py-1 rounded">JOIN</button>
+            </div>
+            <div class="casino-card">
+                <span class="mic-icon">🎤 LIVE</span>
+                <div class="text-3xl mb-2">♥️</div>
+                <div class="font-bold text-xs">POKER ROOM</div>
+                <button class="mt-3 text-[10px] border border-[#D4AF37] px-3 py-1 rounded">JOIN</button>
+            </div>
+            <div class="casino-card">
+                <span class="mic-icon">🎤 LIVE</span>
+                <div class="text-3xl mb-2">♣️</div>
+                <div class="font-bold text-xs">HOLD'EM</div>
+                <button class="mt-3 text-[10px] border border-[#D4AF37] px-3 py-1 rounded">JOIN</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 adult-row">
+        <h2 class="px-5 text-red-600 text-sm uppercase tracking-[0.2em] mb-4 font-bold">Empire After Hours (18+)</h2>
+        <div class="scroll-row">
+            <div class="poster border-red-900"><img src="https://image.tmdb.org/t/p/w500/o73wSBY96su92v5pY0v6as8p0V2.jpg"></div>
+            <div class="poster border-red-900"><img src="https://image.tmdb.org/t/p/w500/scv7m7n42yS4fC7e8Pclxid9r7S.jpg"></div>
+            <div class="poster border-red-900"><img src="https://image.tmdb.org/t/p/w500/uS9mY776S3uY68Y9I3SIdY3S9I3.jpg"></div>
+        </div>
+    </div>
 
 </body>
 </html>
