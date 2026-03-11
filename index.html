@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKI FLICKS | DEVELOPER EDITION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;900&display=swap');
+        body { background: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .gold { color: #D4AF37; font-family: 'Cinzel', serif; text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.15); }
+        .poster { min-width: 170px; height: 250px; border-radius: 8px; transition: 0.4s; cursor: pointer; position: relative; overflow: hidden; }
+        .poster:hover { transform: translateY(-5px); border: 1px solid #D4AF37; }
+        .admin-panel { display: none; border: 2px solid #D4AF37; background: #000; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; box-shadow: 0 0 50px rgba(212, 175, 55, 0.5); }
+        .btn-gold { background: #D4AF37; color: #000; font-weight: 900; }
+        #age-gate { background: rgba(0,0,0,0.98); z-index: 200; }
+    </style>
+</head>
+<body>
+
+    <div id="admin-modal" class="admin-panel text-center">
+        <h2 class="gold text-xl mb-4">IMPERIAL ACCESS TERMINAL</h2>
+        <input type="password" id="master-input" placeholder="Enter Secret Code..." class="bg-white/10 w-full p-3 rounded mb-4 text-center outline-none border border-gold/20">
+        <button onclick="checkMasterCode()" class="btn-gold w-full py-3 rounded-lg mb-4">ACTIVATE GHOST MODE</button>
+        <div id="dev-tools" class="hidden">
+            <hr class="border-white/10 my-4">
+            <p class="text-[10px] text-gray-400 mb-2 uppercase">Guest Code Generator</p>
+            <button onclick="generatePass('GUEST')" class="bg-blue-600 w-full py-2 rounded text-[10px] font-bold mb-2 uppercase">Create Guest Pass</button>
+            <div class="flex gap-2">
+                <button onclick="generatePass('1ST')" class="bg-green-600 flex-1 py-2 rounded text-[8px] font-bold uppercase">1st Place</button>
+                <button onclick="generatePass('2ND')" class="bg-silver-600 flex-1 py-2 rounded text-[8px] font-bold uppercase bg-gray-500">2nd Place</button>
+            </div>
+            <div id="code-output" class="mt-4 p-2 bg-white/5 gold font-black text-xl tracking-widest"></div>
+        </div>
+        <button onclick="closeAdmin()" class="text-gray-500 text-[10px] mt-4 uppercase">Close Terminal</button>
+    </div>
+
+    <div id="age-gate" class="fixed inset-0 flex flex-col items-center justify-center text-center p-6">
+        <div class="glass p-10 max-w-sm border-gold/20">
+            <h1 class="gold text-5xl mb-2">NIKKI FLICKS</h1>
+            <p class="text-gray-400 text-[10px] mb-8 uppercase tracking-widest">Enter Access Code or Verify Age</p>
+            <input type="text" id="guest-input" placeholder="Guest Code..." class="bg-white/10 w-full p-3 rounded-full mb-4 text-center text-xs outline-none">
+            <button onclick="checkGuestCode()" class="btn-gold w-full py-3 rounded-full text-xs mb-4">ACCESS WITH CODE</button>
+            <div class="flex gap-2">
+                <button onclick="enter()" class="flex-1 bg-white/5 py-3 rounded-full text-[10px] font-bold">I AM 18+</button>
+                <button onclick="location.reload()" class="flex-1 bg-red-900/20 py-3 rounded-full text-[10px] font-bold">EXIT</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="fixed top-0 w-full h-16 glass z-50 flex justify-between items-center px-6">
+        <span onclick="logoTap()" class="gold text-2xl font-black cursor-pointer">NIKKI FLICKS</span>
+        <div class="flex gap-4">
+            <input type="text" id="search" placeholder="Search..." class="bg-white/5 px-4 py-1.5 rounded-full text-xs outline-none focus:ring-1 focus:ring-gold w-32 md:w-64">
+            <div class="gold font-black">💰 <span id="balance">10,000</span></div>
+        </div>
+    </header>
+
+    <main class="pt-24 px-6 pb-32">
+        <div id="player-wrap" class="mb-10 hidden glass p-2"><video id="video" class="video-js vjs-big-play-centered" controls width="100%"></video></div>
+        
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="gold text-xs font-black uppercase tracking-widest">Vault Trending</h2>
+            <button onclick="unlockAdult()" id="adult-btn" class="text-red-600 text-[10px] font-black uppercase border border-red-600/30 px-3 py-1 rounded">18+ Vault</button>
+        </div>
+        <div id="grid" class="flex overflow-x-auto gap-4 pb-10 no-scrollbar"></div>
+
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <div onclick="sit('SPADES')" class="glass p-8 text-center rounded-2xl relative">
+                <span id="s-mic" class="hidden absolute top-3 right-3 text-red-500 animate-pulse font-black text-[9px]">🎤 LIVE</span>
+                <div class="text-4xl mb-2">♠️</div>
+                <div class="text-[9px] font-black uppercase tracking-widest">Spades</div>
+            </div>
+            <div onclick="sit('POKER')" class="glass p-8 text-center rounded-2xl relative">
+                <span id="p-mic" class="hidden absolute top-3 right-3 text-red-500 animate-pulse font-black text-[9px]">🎤 LIVE</span>
+                <div class="text-4xl mb-2">♥️</div>
+                <div class="text-[9px] font-black uppercase tracking-widest">Poker</div>
+            </div>
+        </div>
+
+        <div class="mt-10 glass p-8 text-center rounded-3xl">
+            <h3 class="gold text-[10px] font-black mb-6 uppercase tracking-[0.3em]">Imperial Banking</h3>
+            <button onclick="pay()" id="pay-btn" class="bg-white text-black font-black py-4 w-full rounded-2xl shadow-xl hover:scale-105 transition">APPLE PAY RECHARGE</button>
+        </div>
+    </main>
+
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script>
+        const TMDB_KEY = '43e8f6e540b344399888c74e152933f7';
+        const MASTER_CODE = 'NIKKI999'; // <--- THIS IS YOUR PERMANENT DEVELOPER CODE
+        let activeGuestCodes = []; 
+        let taps = 0;
+        let isGhost = false;
+
+        function logoTap() {
+            taps++;
+            if(taps >= 5) {
+                document.getElementById('admin-modal').style.display = 'block';
+                taps = 0;
+            }
+        }
+
+        function checkMasterCode() {
+            const val = document.getElementById('master-input').value;
+            if(val === MASTER_CODE) {
+                isGhost = true;
+                document.getElementById('dev-tools').classList.remove('hidden');
+                document.getElementById('age-gate').style.display = 'none';
+                document.getElementById('pay-btn').innerText = 'GHOST MODE ACTIVE';
+                document.getElementById('balance').innerText = 'UNLIMITED';
+                alert("Welcome back, Boss. Ghost Mode enabled.");
+            }
+        }
+
+        function generatePass(type) {
+            const newCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            activeGuestCodes.push(newCode);
+            document.getElementById('code-output').innerText = newCode;
+            alert(`${type} Code Generated: ${newCode}`);
+        }
+
+        function checkGuestCode() {
+            const input = document.getElementById('guest-input').value;
+            if(activeGuestCodes.includes(input)) {
+                enter();
+                alert("Guest Access Granted.");
+            } else {
+                alert("Invalid or Expired Code.");
+            }
+        }
+
+        function enter() { document.getElementById('age-gate').style.display = 'none'; load('trending/movie/day'); }
+        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        async function load(path) {
+            const r = await fetch(`https://api.themoviedb.org/3/${path}${path.includes('?') ? '&' : '?'}api_key=${TMDB_KEY}`);
+            const d = await r.json();
+            document.getElementById('grid').innerHTML = d.results.map(m => `
+                <div class="poster" onclick="play('${m.title}')">
+                    <img src="https://image.tmdb.org/t/p/w500${m.poster_path}">
+                    <div class="absolute bottom-0 bg-black/70 w-full p-2 text-[8px] font-bold">${m.title}</div>
+                </div>`).join('');
+        }
+
+        function unlockAdult() {
+            if(isGhost) { load('discover/movie?include_adult=true'); }
+            else { alert("Access Denied. Verification Required."); }
+        }
+
+        function sit(g) {
+            const id = g === 'SPADES' ? 's-mic' : 'p-mic';
+            document.getElementById(id).classList.toggle('hidden');
+            alert(`Joined ${g} table.`);
+        }
+
+        function pay() { if(!isGhost) alert("Redirecting to Payments..."); }
+
+        document.getElementById('search').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') load(`search/movie?query=${e.target.value}`);
+        });
+    </script>
+</body>
+</html>
